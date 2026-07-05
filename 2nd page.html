@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:#091521;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+.sidebar{
+width:270px;
+background:#08131f;
+padding:20px;
+border-right:2px solid #1c3044;
+}
+
+.logo{
+margin-bottom:25px;
+}
+
+.logo h1{
+color:white;
+font-size:50px;
+font-weight:bold;
+line-height:40px;
+text-transform:lowercase;
+}
+
+.arrow{
+width:55px;
+height:18px;
+border-bottom:5px solid orange;
+border-radius:0 0 50px 50px;
+margin-left:12px;
+position:relative;
+}
+
+.arrow::after{
+content:"➜";
+color:orange;
+position:absolute;
+right:-8px;
+top:-10px;
+font-size:18px;
+transform:rotate(20deg);
+}
+
+.menu{
+width:100%;
+padding:14px;
+margin:8px 0;
+background:transparent;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+text-align:left;
+cursor:pointer;
+transition:.3s;
+}
+
+.menu:hover{
+background:#174b96;
+}
+
+.active{
+background:#2b6fe3;
+}
+
+.content{
+flex:1;
+background:#0b1723;
+margin-left:18px;
+border-left:1px solid #1c3044;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="logo">
+<h1>aws</h1>
+<div class="arrow"></div>
+</div>
+
+<button class="menu active">🏠 Dashboard</button>
+<button class="menu">📁 Account Factory</button>
+<button class="menu">👥 Organizations</button>
+<button class="menu">🆔 IAM Identity Center</button>
+<button class="menu">🛡 Guardrails</button>
+<button class="menu">📊 Monitoring</button>
+<button class="menu">☁ Cost Management</button>
+<button class="menu">📄 Reports</button>
+
+</div>
+
+<div class="content">
+
+</div>
+
+</div>
+
+<script>
+
+let menu=document.querySelectorAll(".menu");
+
+menu.forEach(function(btn){
+
+btn.onclick=function(){
+
+menu.forEach(function(item){
+item.classList.remove("active");
+});
+
+this.classList.add("active");
+
+};
+
+});
+
+</script>
+
+</body>
+</html>

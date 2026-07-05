@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Control Tower Login</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.login-logo {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a73e8;
+    margin-bottom: 5px;
+}
+
+.login-subtitle {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+}
+
+.error-msg {
+    display: none;
+    background: #fdecea;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.success-msg {
+    display: none;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.footer-text {
+    margin-top: 25px;
+    font-size: 12px;
+    color: #999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-logo">☁️</div>
+
+    <div class="login-title">
+        AWS Control Tower Multi-Account Architecture with Intelligent Governance
+    </div>
+
+    <div class="login-subtitle">
+        Sign in to continue
+    </div>
+
+    <div class="error-msg" id="errorMsg">
+        ❌ Invalid Username or Password!
+    </div>
+
+    <div class="success-msg" id="successMsg">
+        ✅ Login Successful!
+    </div>
+
+    <div class="input-group">
+        <label>Username</label>
+        <input type="text" id="username" placeholder="Enter Username">
+    </div>
+
+    <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter Password">
+    </div>
+
+    <button class="login-btn" onclick="handleLogin()">
+        Sign In →
+    </button>
+
+    <div class="footer-text">
+        © 2026 AWS Control Tower Dashboard
+    </div>
+
+</div>
+
+<script>
+function handleLogin() {
+
+    let username = document.getElementById("username").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    let errorMsg = document.getElementById("errorMsg");
+    let successMsg = document.getElementById("successMsg");
+
+    errorMsg.style.display = "none";
+    successMsg.style.display = "none";
+
+    if(username === "" || password === "") {
+
+        errorMsg.innerHTML =
+            "❌ Please enter Username and Password";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    if(username === "admin" &&
+       password === "admin123") {
+
+        successMsg.innerHTML =
+            "✅ Login Successful!";
+        successMsg.style.display = "block";
+
+        // Yethun pudhe kontahi navin page open honar nahi
+
+    } else {
+
+        errorMsg.innerHTML =
+            "❌ Invalid Username or Password!";
+        errorMsg.style.display = "block";
+    }
+}
+
+// Enter key support
+document.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        handleLogin();
+    }
+});
+</script>
+
+</body>
+</html>

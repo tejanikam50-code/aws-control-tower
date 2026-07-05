@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Control Tower Landing Zone</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    /* CHANGED TO DARK BLUE BELOW */
+    background:#0f172a;
+    color:#000;
+    padding:15px;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #334155;
+    padding-bottom:15px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#38bdf8; /* Enhanced brightness for contrast */
+    font-size:38px;
+}
+
+.header p{
+    color:#94a3b8; /* Enhanced grey visibility */
+    margin-top:8px;
+}
+
+.top-menu{
+    display:flex;
+    gap:30px;
+    align-items:center;
+    font-size:15px;
+    color:#e2e8f0;
+}
+
+/* TOP CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:15px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    padding:20px;
+    min-height:140px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.card h3{
+    color:#041b7a;
+    margin-bottom:20px;
+}
+
+.card h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#666;
+}
+
+.alert{
+    color:red;
+}
+
+/* PART 2 */
+
+.middle-section{
+    display:grid;
+    grid-template-columns:2fr 1.3fr 1.6fr;
+    gap:15px;
+    margin-top:20px;
+}
+
+.box{
+    background:#fff;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.box h2{
+    color:#041b7a;
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+.root-box{
+    width:300px;
+    margin:0 auto;
+    padding:12px;
+    text-align:center;
+    border:2px solid #2c63ff;
+    border-radius:10px;
+}
+
+.line{
+    width:2px;
+    height:50px;
+    background:#999;
+    margin:0 auto;
+}
+
+.ou-container{
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+}
+
+.ou-card{
+    width:120px;
+    min-height:140px;
+    border:2px solid;
+    border-radius:12px;
+    padding:15px;
+}
+
+.ou-card h3{
+    margin-bottom:15px;
+    color:#041b7a;
+}
+
+.green{border-color:#4caf50;}
+.blue{border-color:#2196f3;}
+.orange{border-color:#ff9800;}
+.purple{border-color:#9c27b0;}
+
+.ou-card p{
+    margin-top:10px;
+    color:#555;
+}
+
+.services{
+    list-style:none;
+}
+
+.services li{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.services span{
+    color:green;
+    font-weight:bold;
+}
+
+.donut-chart{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:conic-gradient(
+        #4caf50 360deg,
+        #4caf50 360deg
+    );
+    margin:20px auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.inner-circle{
+    width:110px;
+    height:110px;
+    background:#fff;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.inner-circle h1{
+    color:#041b7a;
+}
+
+.legend{
+    margin-top:20px;
+}
+
+.legend p{
+    margin:12px 0;
+}
+
+.c1,.c2,.c3{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    margin-right:10px;
+}
+
+.c1{background:#4caf50;}
+.c2{background:#ff9800;}
+.c3{background:#999;}
+
+.total-rules{
+    text-align:right;
+    margin-top:20px;
+    color:#555;
+}
+
+.bottom-section{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1.2fr;
+    gap:15px;
+    margin-top:20px;
+}
+
+/* COST CHART */
+
+.cost-chart{
+    height:250px;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    border-left:2px solid #ccc;
+    border-bottom:2px solid #ccc;
+    padding:20px;
+}
+
+.bar-item{
+    text-align:center;
+}
+
+.bar{
+    width:45px;
+    background:#2196f3;
+    border-radius:6px 6px 0 0;
+}
+
+.jan{height:90px;}
+.feb{height:120px;}
+.mar{height:150px;}
+.apr{height:180px;}
+.may{height:210px;}
+.jun{height:190px;}
+.jul{height:230px;}
+
+.bar-item span{
+    display:block;
+    margin-top:10px;
+}
+
+.cost-total{
+    text-align:center;
+    margin-top:20px;
+    color:#041b7a;
+    font-size:18px;
+}
+
+/* PIE CHART */
+
+.pie-chart{
+    width:220px;
+    height:220px;
+    margin:20px auto;
+    border-radius:50%;
+
+    background:conic-gradient(
+        #2196f3 0% 40%,
+        #4caf50 40% 65%,
+        #ff9800 65% 85%,
+        #9c27b0 85% 100%
+    );
+}
+
+.service-legend{
+    margin-top:20px;
+}
+
+.service-legend p{
+    margin:12px 0;
+}
+
+.s1,.s2,.s3,.s4{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    margin-right:10px;
+}
+
+.s1{background:#2196f3;}
+.s2{background:#4caf50;}
+.s3{background:#ff9800;}
+.s4{background:#9c27b0;}
+
+/* RECENT ACTIVITY */
+
+.activity-list{
+    list-style:none;
+}
+
+.activity-list li{
+    padding:18px 0;
+    border-bottom:1px solid #ddd;
+    color:#333;
+}
+
+/* PART 4 */
+
+.last-section{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:20px;
+}
+
+/* ALERTS */
+
+.alert-box{
+    padding:18px;
+    border-radius:8px;
+    margin-bottom:15px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.critical{
+    background:#ffe5e5;
+    color:#c62828;
+    border-left:6px solid #c62828;
+}
+
+.warning{
+    background:#fff3e0;
+    color:#ef6c00;
+    border-left:6px solid #ef6c00;
+}
+
+.info{
+    background:#e3f2fd;
+    color:#1565c0;
+    border-left:6px solid #1565c0;
+}
+
+.success{
+    background:#e8f5e9;
+    color:#2e7d32;
+    border-left:6px solid #2e7d32;
+}
+
+/* QUICK LINKS */
+
+.quick-links{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.quick-links a{
+    text-decoration:none;
+    padding:15px;
+    background:#f5f5f5;
+    border:1px solid #ddd;
+    border-radius:8px;
+    color:#041b7a;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.quick-links a:hover{
+    background:#041b7a;
+    color:#fff;
+}
+
+/* FOOTER */
+
+.footer-summary{
+    margin-top:20px;
+    background:#ffffff;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.footer-summary h2{
+    color:#041b7a;
+    margin-bottom:20px;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.summary-card{
+    text-align:center;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:20px;
+    background:#fafafa;
+}
+
+.summary-card h3{
+    color:#041b7a;
+    margin-bottom:10px;
+}
+
+.summary-card p{
+    font-size:18px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+
+    <div>
+        <h1>AWS CONTROL TOWER LANDING ZONE</h1>
+        <p>Secure | Scalable | Governed Cloud Environment</p>
+    </div>
+
+    <div class="top-menu">
+        <span>🌐 Global</span>
+        <span>🔔 Notifications</span>
+        <span>❓ Support</span>
+        <span><b>Admin User</b><br>Management Account</span>
+    </div>
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>AWS Accounts</h3>
+        <h1>6</h1>
+        <p>Total Accounts</p>
+    </div>
+
+    <div class="card">
+        <h3>Organizational Units</h3>
+        <h1>4</h1>
+        <p>OUs Configured</p>
+    </div>
+
+    <div class="card">
+        <h3>Guardrails</h3>
+        <h1>25</h1>
+        <p>Active Controls</p>
+    </div>
+
+    <div class="card">
+        <h3>Compliance</h3>
+        <h1>100%</h1>
+        <p>Compliant</p>
+    </div>
+
+    <div class="card">
+        <h3>Cost (This Month)</h3>
+        <h1>$12,458.64</h1>
+        <p>Total Spend</p>
+    </div>
+
+    <div class="card">
+        <h3>Open Alerts</h3>
+        <h1 class="alert">3</h1>
+        <p>Active Alerts</p>
+    </div>
+
+</div>
+
+<div class="middle-section">
+
+    <div class="box">
+
+        <h2>ORGANIZATIONAL STRUCTURE</h2>
+
+        <div class="root-box">
+            Root (Management Account)
+        </div>
+
+        <div class="line"></div>
+
+        <div class="ou-container">
+
+            <div class="ou-card green">
+                <h3>Security OU</h3>
+                <p>Audit Account</p>
+                <p>Log Archive Account</p>
+            </div>
+
+            <div class="ou-card blue">
+                <h3>Development OU</h3>
+                <p>Dev Account</p>
+            </div>
+
+            <div class="ou-card orange">
+                <h3>Testing OU</h3>
+                <p>Test Account</p>
+            </div>
+
+            <div class="ou-card purple">
+                <h3>Production OU</h3>
+                <p>Prod Account</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="box">
+
+        <h2>AWS SERVICE STATUS</h2>
+
+        <ul class="services">
+            <li>AWS Control Tower <span>Active</span></li>
+            <li>AWS Organizations <span>Active</span></li>
+            <li>IAM Identity Center <span>Active</span></li>
+            <li>AWS CloudTrail <span>Active</span></li>
+            <li>AWS Config <span>Active</span></li>
+            <li>Amazon CloudWatch <span>Active</span></li>
+            <li>AWS Budgets <span>Active</span></li>
+        </ul>
+
+    </div>
+
+    <div class="box">
+
+        <h2>COMPLIANCE OVERVIEW</h2>
+
+        <div class="donut-chart">
+
+            <div class="inner-circle">
+                <h1>100%</h1>
+                <p>Compliant</p>
+            </div>
+
+        </div>
+
+        <div class="legend">
+            <p><span class="c1"></span> Compliant - 25</p>
+            <p><span class="c2"></span> Non-Compliant - 0</p>
+            <p><span class="c3"></span> Not Evaluated - 0</p>
+        </div>
+
+        <p class="total-rules">
+            Total Rules: 25
+        </p>
+
+    </div>
+
+</div>
+
+<div class="bottom-section">
+
+    <div class="box">
+
+        <h2>COST OVERVIEW</h2>
+
+        <div class="cost-chart">
+
+            <div class="bar-item">
+                <div class="bar jan"></div>
+                <span>Jan</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar feb"></div>
+                <span>Feb</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar mar"></div>
+                <span>Mar</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar apr"></div>
+                <span>Apr</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar may"></div>
+                <span>May</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar jun"></div>
+                <span>Jun</span>
+            </div>
+
+            <div class="bar-item">
+                <div class="bar jul"></div>
+                <span>Jul</span>
+            </div>
+
+        </div>
+
+        <div class="cost-total">
+            Current Month Spend: <b>$12,458.64</b>
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>TOP SERVICES BY COST</h2>
+
+        <div class="pie-chart"></div>
+
+        <div class="service-legend">
+
+            <p><span class="s1"></span> EC2 - 40%</p>
+            <p><span class="s2"></span> S3 - 25%</p>
+            <p><span class="s3"></span> RDS - 20%</p>
+            <p><span class="s4"></span> Lambda - 15%</p>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>RECENT ACTIVITY</h2>
+
+        <ul class="activity-list">
+
+            <li>✅ New AWS Account Created</li>
+            <li>🔒 Guardrail Applied Successfully</li>
+            <li>📊 Compliance Scan Completed</li>
+            <li>⚠ Budget Alert Triggered</li>
+            <li>👤 New User Added to IAM Identity Center</li>
+            <li>📁 CloudTrail Logs Archived</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+<div class="last-section">
+
+    <div class="box">
+
+        <h2>MONITORING & ALERTS</h2>
+
+        <div class="alert-box critical">
+            🔴 Critical Alerts : 1
+        </div>
+
+        <div class="alert-box warning">
+            🟠 Warning Alerts : 2
+        </div>
+
+        <div class="alert-box info">
+            🔵 Informational Alerts : 5
+        </div>
+
+        <div class="alert-box success">
+            🟢 All Monitoring Services Running
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>QUICK LINKS</h2>
+
+        <div class="quick-links">
+
+            <a href="#">AWS Console</a>
+            <a href="#">Control Tower Dashboard</a>
+            <a href="#">CloudWatch Dashboard</a>
+            <a href="#">AWS Budgets</a>
+            <a href="#">CloudTrail Logs</a>
+            <a href="#">Security Hub</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="footer-summary">
+
+    <h2>DASHBOARD SUMMARY</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <h3>Environment Status</h3>
+            <p>✅ Healthy</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Security Status</h3>
+            <p>🔒 Secured</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Compliance Status</h3>
+            <p>✔ 100% Compliant</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Overall Health</h3>
+            <p>🟢 Excellent</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

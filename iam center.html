@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Dashboard Output</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* CHANGED TO DARK BLUE BELOW */
+            background-color: #0f172a; 
+            margin: 20px;
+            color: #333;
+        }
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 3.2fr 1fr;
+            gap: 20px;
+        }
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .top-header {
+            background-color: #001f4d;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            grid-column: span 2;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+        .full-width {
+            grid-column: span 3;
+        }
+        .section-box {
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .title-purple { color: #5c3592; }
+        .title-blue { color: #0056b3; }
+        .title-green { color: #1e7e34; }
+        .title-orange { color: #d97724; }
+        
+        .badge {
+            color: white;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .badge.purple { background-color: #5c3592; }
+        .badge.blue { background-color: #0056b3; }
+        .badge.green { background-color: #1e7e34; }
+        .badge.orange { background-color: #d97724; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-weight: bold;
+        }
+        td { color: #334155; }
+        
+        .status-success {
+            color: #2f855a;
+            font-weight: bold;
+        }
+
+        .icon-check {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        
+        .status-bg {
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        
+        .total-counter {
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 12px;
+            background-color: #e6f0fa;
+            border: 1px solid #b8daff;
+            color: #004085;
+            border-radius: 6px;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .flex-container {
+            display: flex;
+            gap: 15px;
+        }
+        .flex-child {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sso-info {
+            font-size: 11px;
+            line-height: 1.8;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .sso-features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: auto;
+            text-align: center;
+            font-size: 10px;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 10px;
+            margin-bottom: 12px;
+        }
+        .sso-success-banner {
+            background-color: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            text-align: center;
+            padding: 6px;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: auto;
+        }
+        .validation-panel {
+            background-color: #001f4d;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-radius: 6px 6px 0 0;
+        }
+        .validation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 15px;
+            border: 1px solid #cbd5e1;
+            border-top: none;
+            background-color: #fff;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .validation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .v-title {
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            font-size: 12px;
+            color: #0056b3;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 5px;
+        }
+        
+        .right-box {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .right-box-title {
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .bg-green-header { background-color: #1e7e34; }
+        .bg-purple-header { background-color: #3931af; }
+        
+        .achievement-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+        .achievement-item strong {
+            display: block;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        .achievement-item p {
+            margin: 0;
+            color: #64748b;
+        }
+        .deliverable-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            padding: 8px 0;
+            color: #334155;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .deliverable-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    
+    <div class="top-header">OUTPUT IAM ROLES CENTER</div>
+
+    <div class="left-column">
+        <div class="grid-container">
+            
+            <div class="section-box">
+                <div>
+                    <div class="section-title title-purple"><span class="badge purple">1</span> IAM ROLES CREATED</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>AWSControlTowerExecutionRole</td><td>For Control Tower Operations</td></tr>
+                            <tr><td>OrganizationAccountAccessRole</td><td>Cross-account Access</td></tr>
+                            <tr><td>AWSServiceRoleForCloudTrail</td><td>CloudTrail Service Role</td></tr>
+                            <tr><td>AWSServiceRoleForConfig</td><td>AWS Config Service Role</td></tr>
+                            <tr><td>ReadOnlyAccessRole</td><td>Read-only Access to Resources</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="total-counter">Total Roles Created: 5 &nbsp;
+                    <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div>
+                    <div class="section-title title-blue"><span class="badge blue">2</span> CUSTOM POLICIES CREATED</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Policy Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>AllowEC2FullAccess</td><td>Full access to EC2</td></tr>
+                            <tr><td>AllowS3ReadOnly</td><td>Read only access to S3</td></tr>
+                            <tr><td>DenyPublicS3Access</td><td>Deny public S3 access</td></tr>
+                            <tr><td>AllowCloudWatchAccess</td><td>Access to CloudWatch</td></tr>
+                            <tr><td>BillingReadOnlyAccess</td><td>Read only access to Billing</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="total-counter">Total Policies Created: 5 &nbsp;
+                    <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div>
+                    <div class="section-title title-green"><span class="badge green">3</span> IAM IDENTITY CENTER (SSO)</div>
+                    <div class="sso-info">
+                        <strong>Status</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="status-bg">Enabled</span><br>
+                        <strong>Instance ARN</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b; font-size:10px;">arn:aws:sso:::instance/ssoins-1234567890abcdef</span><br>
+                        <strong>Identity Source</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AWS SSO Directory<br>
+                        <strong>SSO URL</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" style="color:#0056b3; text-decoration:none;">https://d-1234567890.awsapps.com/start</a>
+                    </div>
+                    <div class="sso-features">
+                        <div>👥<br><span style="color:#64748b;font-size:10px;">Single Sign-On</span><br><span style="color:#16a34a;font-weight:bold;">Enabled</span></div>
+                        <div>🛡️<br><span style="color:#64748b;font-size:10px;">MFA</span><br><span style="color:#16a34a;font-weight:bold;">Enabled</span></div>
+                        <div>🔑<br><span style="color:#64748b;font-size:10px;">Password Policy</span><br><span style="color:#16a34a;font-weight:bold;">Configured</span></div>
+                    </div>
+                </div>
+                <div class="sso-success-banner">
+                    <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                    IAM Identity Center configured successfully
+                </div>
+            </div>
+
+            <div class="section-box full-width">
+                <div class="section-title title-orange"><span class="badge orange">4</span> USERS AND GROUPS MANAGEMENT</div>
+                
+                <div class="flex-container">
+                    <div class="flex-child">
+                        <div>
+                            <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #1e293b;">Users Created (5)</div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>alice.dev</td><td>alice.dev@example.com</td></tr>
+                                    <tr><td>bob.dev</td><td>bob.dev@example.com</td></tr>
+                                    <tr><td>charlie.ops</td><td>charlie.ops@example.com</td></tr>
+                                    <tr><td>david.sec</td><td>david.sec@example.com</td></tr>
+                                    <tr><td>emma.finance</td><td>emma.finance@example.com</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-counter">Total Users: 5 &nbsp;
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                        </div>
+                    </div>
+
+                    <div class="flex-child">
+                        <div>
+                            <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #1e293b;">Groups Created (4)</div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Group Name</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Developers</td><td>Access for Developers</td></tr>
+                                    <tr><td>Operators</td><td>Access for Operators</td></tr>
+                                    <tr><td>SecurityTeam</td><td>Access for Security Team</td></tr>
+                                    <tr><td>FinanceTeam</td><td>Access for Finance Team</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-counter">Total Groups: 4 &nbsp;
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                        </div>
+                    </div>
+
+                    <div class="flex-child" style="flex: 1.1;">
+                        <div>
+                            <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #0056b3;">PERMISSION SETS ASSIGNED</div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Permission Set</th>
+                                        <th>Assigned To</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>AdministratorAccess</td><td>Admins Group</td><td>AWS Managed</td></tr>
+                                    <tr><td>PowerUserAccess</td><td>Developers Group</td><td>AWS Managed</td></tr>
+                                    <tr><td>ReadOnlyAccess</td><td>Operators Group</td><td>AWS Managed</td></tr>
+                                    <tr><td>SecurityAuditAccess</td><td>SecurityTeam Group</td><td>Custom</td></tr>
+                                    <tr><td>BillingReadOnlyAccess</td><td>FinanceTeam Group</td><td>Custom</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-counter">Total Permission Sets: 5 &nbsp;
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div>
+            <div class="validation-panel">ACCESS TESTING & VALIDATION</div>
+            <div class="validation-content">
+                <div>
+                    <div class="v-title">SSO Login Test</div>
+                    <div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;User login via SSO
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div>
+                    <div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;MFA Authentication
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="v-title">Resource Access Test</div>
+                    <div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;Access AWS Account
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div><div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;Role/Permission Access
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="v-title">Policy Enforcement</div>
+                    <div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;Deny Public S3
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div>
+                    <div class="validation-item">
+                        <span>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#2f855a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                            &nbsp;Billing View Check
+                        </span>
+                        <span class="status-success">Success</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+        <div class="right-box">
+            <div class="right-box-title bg-green-header">KEY ACHIEVEMENTS</div>
+            <div class="achievement-item">
+                <div>
+                    <strong>Secure Access Setup</strong>
+                    <p>Enforced multi-factor authentication across all active identity sets.</p>
+                </div>
+            </div>
+            <div class="achievement-item">
+                <div>
+                    <strong>Granular Isolation</strong>
+                    <p>Designed separate custom permissions targeting distinct organizational environments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-box">
+            <div class="right-box-title bg-purple-header">DELIVERABLES CHECKLIST</div>
+            <div class="deliverable-item">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#1e7e34" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                5 Custom Roles Configured
+            </div>
+            <div class="deliverable-item">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#1e7e34" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                Identity Sync Completed
+            </div>
+            <div class="deliverable-item">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="#1e7e34" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 16 8 12"></polyline></svg>
+                Access Maps Validated
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>
